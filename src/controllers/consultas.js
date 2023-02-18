@@ -88,3 +88,51 @@ exports.createRol = async ({ id_rol, email_rol }) => {
     return error;
   }
 };
+
+/* ELIMINAR ROL */
+exports.eliminarRol = async (id) => {
+    try {
+      const consulta = "DELETE FROM email_roles WHERE id_roles = $1";
+      const valores = [id];
+      const resultado = await pool.query(consulta, valores);
+      return resultado;
+    } catch (error) {
+      console.log("No se pudo llevar a cabo la eliminación", error);
+      return error;
+    }
+  
+  };
+
+
+/* MODIFICAR ROL */
+
+exports.modificarRol = async (id_roles, id_rol, email_rol) => {
+
+  
+    try {
+      const consulta = `UPDATE email_roles SET id_rol = $2, email_rol = $3 WHERE id_roles = $1`;
+
+      console.log('consulta update', consulta)
+      const valores = [ id_roles, id_rol, email_rol];
+      const resultados = await pool.query(consulta, valores);
+      return resultados;
+    } catch (error) {
+      console.log('no se pudo actualizar el rol',error);
+    }
+  };
+
+
+  /* OBTENER ROLES */
+exports.getAllEmailRoles = async () => {
+    try {
+      const consulta = "SELECT * FROM email_roles";
+      const { rows } = await pool.query(consulta);
+  
+      console.log("rows: ", rows);
+      return rows;
+    } catch (error) {
+      console.log("No se pueden obtener los emails de los roles", error);
+      return error;
+    }
+  };
+  

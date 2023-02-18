@@ -85,3 +85,5 @@ exports.getUsers = async (req, res, next) => {
   }
 };
 
+/* ELIMINAR USUARIO */
+
