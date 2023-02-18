@@ -6,16 +6,19 @@ const {
 create,
 login,
 getUser,
-getUsers
+getUsers,
+createRoles
 } = require("../controllers/palomo_controllers");
 
 ruta.route("/usuario")
     .get(securitySystem, getUser)
     .post(create)
 ruta.route("/usuarios")   
-    .get(getUsers)
+    .get(securitySystem, getUsers)
 ruta.route("/login")
     .post(login)
+ruta.route("/crear-rol")
+    .post(createRoles)
 
     
 module.exports = ruta;

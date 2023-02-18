@@ -21,6 +21,7 @@ exports.securitySystem = async (req, res, next) => {
   try {
     const { email } = jwt.verify(token, JWT_SECRET_WORD);
     const usuario = await getUserVerify(email);
+  
     console.log("usuario:", usuario);
     req.usuario = usuario;
     next();

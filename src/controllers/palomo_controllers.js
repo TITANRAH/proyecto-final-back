@@ -1,10 +1,16 @@
-const { createUser, verifyCredentials, getAllUsers } = require("./consultas");
+const {
+  createUser,
+  verifyCredentials,
+  getAllUsers,
+  createRol,
+} = require("./consultas");
 const ErrorResponse = require("../helpers/errorResponse");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./src/config/config.env" });
 const JWT_SECRET_WORD = process.env.JWT_SECRET_WORD;
 
+/* CREAR USUARIO */
 exports.create = async (req, res, next) => {
   try {
     const { nombre, apellido, email, password } = req.body;
@@ -18,7 +24,7 @@ exports.create = async (req, res, next) => {
 
       console.log(usuario);
       await createUser(usuario);
-      return res.status(200).json({status: 200, message: 'Usuario creado'});
+      return res.status(200).json({ status: 200, message: "Usuario creado" });
     } else {
       return res.send("Los campos no pueden ir vacíos");
     }
@@ -30,48 +36,72 @@ exports.create = async (req, res, next) => {
 };
 
 
+/* LOGIN USUARIO */
 exports.login = async (req, res, next) => {
-    try {
-      const { email, password } = req.body;
-      if (!email || !password) {
-        return next(new ErrorResponse("Ingrese un email y un password", 400));
-      }
-      const valorBool = await verifyCredentials(email, password);
-      if (!valorBool) {
-        return next(new ErrorResponse("Las credenciales son incorrectas", 400));
-      }
-      const token = jwt.sign({ email }, JWT_SECRET_WORD, {
-        // expiresIn: process.env.JWT_EXPIRE,
-      });
-      res.status(200).json({usuario: email, token: token });
-    } catch (err) {
-      next(
-        new ErrorResponse("Error, no ha sido posible iniciar sesión" + err + 404)
-      );
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return next(new ErrorResponse("Ingrese un email y un password", 400));
     }
-  };
+    const valorBool = await verifyCredentials(email, password);
+    if (!valorBool) {
+      return next(new ErrorResponse("Las credenciales son incorrectas", 400));
+    }
+    const token = jwt.sign({ email }, JWT_SECRET_WORD, {
+      // expiresIn: process.env.JWT_EXPIRE,
+    });
+    res.status(200).json({ usuario: email, token: token });
+  } catch (err) {
+    next(
+      new ErrorResponse("Error, no ha sido posible iniciar sesión" + err + 404)
+    );
+  }
+};
 
-  exports.getUser = async (req, res, next) => {
-    try {
-      return res.json(req.usuario);
-    } catch (err) {
-      next(
-        new ErrorResponse(
-          "Error, no ha sido posible obtener el usuario" + err + 404
-        )
-      );
-    }
-  };
+/* OBTENER 1 USUARIO */
+exports.getUser = async (req, res, next) => {
+  try {
+    return res.json(req.usuario);
+  } catch (err) {
+    next(
+      new ErrorResponse(
+        "Error, no ha sido posible obtener el usuario" + err + 404
+      )
+    );
+  }
+};
 
-  exports.getUsers = async (req, res, next) => {
-    try {
-      const usuarios = await getAllUsers();
-      res.json(usuarios)
-    } catch (err) {
-      next(
-        new ErrorResponse(
-          "Error, no ha sido posible obtener el usuario" + err + 404
-        )
-      );
+/* OBTENER USUARIOS */
+exports.getUsers = async (req, res, next) => {
+  try {
+    const usuarios = await getAllUsers();   
+    res.json(usuarios);
+  } catch (err) {
+    next(
+      new ErrorResponse(
+        "Error, no ha sido posible obtener el usuario" + err + 404
+      )
+    );
+  }
+};
+
+
+/* CREAR ROL */
+exports.createRoles = async (req, res, next) => {
+  try {
+    const { id_rol, email_rol } = req.body;
+    if (![id_rol, email_rol].includes("")) {
+      const rol = {
+        id_rol,
+        email_rol,
+      };
+      console.log("rol", rol);
+      await createRol(rol);
+      return res
+        .status(200)
+        .json({ status: 200, message: "Rol creado con éxito" });
     }
-  };
+  } catch (err) {
+    next(new ErrorResponse("Error, no ha sido posible crear rol" + err + 404));
+  }
+};
