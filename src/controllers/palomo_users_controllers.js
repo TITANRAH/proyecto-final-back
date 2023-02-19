@@ -118,8 +118,8 @@ exports.deleteUser = async (req, res, next) => {
 /* MODIFICAR USUARIO */
 exports.editUser = async (req, res, next) => {
   try {
-    const { id_usuario } = req.body;
-    const { nombre, apellido, email, password } = req.body;
+    
+    const { id_usuario,nombre, apellido, email, password } = req.body;
     if (![id_usuario, nombre, apellido, email, password].includes("")) {
       await modificarUsuario(id_usuario, nombre, apellido, email, password);
 
