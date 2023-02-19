@@ -30,14 +30,14 @@ exports.createRoles = async (req, res, next) => {
 
 exports.deleteRol = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const { id_roles } = req.body;
 
-    if (id != "") {
-      await eliminarRol(id);
+    if (id_roles != "") {
+      await eliminarRol(id_roles);
 
       res.status(200).json({
         status: 200,
-        estado: `Rol con el id ${id}, eliminado exitósamente`,
+        estado: `Rol con el id ${id_roles}, eliminado exitósamente`,
       });
     } else {
       res.status(400).json({
@@ -54,20 +54,22 @@ exports.deleteRol = async (req, res, next) => {
   }
 };
 
+
+
 /* MODIFICAR ROL */
 
 exports.editRol = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { id_rol, email_rol } = req.body;
-    if (![id, id_rol, email_rol].includes("")) {
+   
+    const { id_roles, id_rol, email_rol } = req.body;
+    if (![id_roles, id_rol, email_rol].includes("")) {
 
   
-      await modificarRol(id, id_rol, email_rol);
+      await modificarRol(id_roles, id_rol, email_rol);
 
       res.status(200).json({
         status: 200,
-        estado: `El rol con id ${id}, ha sido modificado exitósamente `,
+        estado: `El rol con id ${id_roles}, ha sido modificado exitósamente `,
       });
 
     } else {
@@ -101,3 +103,5 @@ exports.getRoles = async (req, res, next) => {
       );
     }
   };
+
+/* FIN ROLES */
