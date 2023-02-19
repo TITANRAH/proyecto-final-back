@@ -3,6 +3,7 @@ const {
   eliminarServicio,
   crearServicioContratado,
   getAllServices,
+  getAllCategorias,
   serviciosContratadosPorIdUsuario,
   eliminarServicioContratado,
   changeStatus,
@@ -70,8 +71,8 @@ exports.deleteService = async (req, res, next) => {
 /* OBTENER SERVICIOS */
 exports.getServices = async (req, res, next) => {
   try {
-    const usuarios = await getAllServices();
-    res.json(usuarios);
+    const servicios = await getAllServices();
+    res.json(servicios);
   } catch (err) {
     next(
       new ErrorResponse(
@@ -177,6 +178,8 @@ exports.deleteServiceContratado = async (req, res, next) => {
   }
 };
 
+/* CAMBIAR ESTADO DE PEDIDO */
+
 exports.changeStatusService = async (req, res, next) => {
   try {
     const { id_estado, id_serv_contratado } = req.body;
@@ -201,3 +204,18 @@ exports.changeStatusService = async (req, res, next) => {
     );
   }
 };
+
+/* OBTENER CATEGORIAS */
+
+exports.getCategorias = async (req, res, next) => {
+    try {
+      const categorias = await getAllCategorias();
+      res.json(categorias);
+    } catch (err) {
+      next(
+        new ErrorResponse(
+          "Error, no ha sido posible obtener los servicios" + err + 404
+        )
+      );
+    }
+  };

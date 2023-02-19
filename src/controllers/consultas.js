@@ -223,6 +223,22 @@ exports.eliminarServicio = async (id) => {
     }
   };
 
+  /* OBTENER CATEGORIAS */
+
+  exports.getAllCategorias = async () => {
+    try {
+      const consulta = "SELECT * FROM categorias";
+      const { rows } = await pool.query(consulta);
+  
+      console.log("rows: ", rows);
+      return rows;
+    } catch (error) {
+      console.log("No se pueden obtener las categorias", error);
+      return error;
+    }
+  };
+
+
   /* FIN SERVICIOS */
 
 

@@ -28,7 +28,8 @@ const {
     getServices,
     getServicioContratado,
     deleteServiceContratado,
-    changeStatusService
+    changeStatusService,
+    getCategorias
 } = require("../controllers/palomo_servicios_controllers");
 
 
@@ -55,6 +56,8 @@ ruta.route("/servicio/:id")
     .post(securitySystem,contratarServicio)
 ruta.route("/servicios")
     .get(getServices)
+ruta.route("/categorias")
+    .get(getCategorias)
 ruta.route("/servicio_contratado")
     .get(securitySystem,getServicioContratado)
     .delete(securitySystem,deleteServiceContratado)
