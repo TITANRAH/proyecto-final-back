@@ -49,9 +49,7 @@ exports.login = async (req, res, next) => {
     if (!valorBool) {
       return next(new ErrorResponse("Las credenciales son incorrectas", 400));
     }
-    const token = jwt.sign({ email }, JWT_SECRET_WORD, {
-      // expiresIn: process.env.JWT_EXPIRE,
-    });
+    const token = jwt.sign({ email }, JWT_SECRET_WORD);
     res.status(200).json({ usuario: email, token: token });
   } catch (err) {
     next(

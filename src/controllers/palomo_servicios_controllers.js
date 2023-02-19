@@ -6,6 +6,7 @@ const {
   serviciosContratadosPorIdUsuario,
   eliminarServicioContratado,
   changeStatus,
+  detectarIdServEnServCont,
 } = require("./consultas");
 const ErrorResponse = require("../helpers/errorResponse");
 
@@ -37,18 +38,25 @@ exports.deleteService = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    if (id != "") {
-      await eliminarServicio(id);
+    if (id == "") {
+      res.status(400).json({
+        status: 400,
+        estado: "Error, id no detectado",
+      });
+    }
+    const isBool = await detectarIdServEnServCont(id);
 
+    console.log("isbool", isBool);
+
+    if (isBool == false) {
+      console.log("es falso no hay filas con este id se deberia eliminar");
+      await eliminarServicio(id);
       res.status(200).json({
         status: 200,
         estado: `Servicio con el id ${id}, eliminado exitósamente`,
       });
     } else {
-      res.status(400).json({
-        status: 400,
-        estado: "Error, id no detectado",
-      });
+      throw err
     }
   } catch (err) {
     next(
@@ -171,10 +179,10 @@ exports.deleteServiceContratado = async (req, res, next) => {
 
 exports.changeStatusService = async (req, res, next) => {
   try {
-    const { id_estado ,id_serv_contratado} = req.body;
+    const { id_estado, id_serv_contratado } = req.body;
 
     if (![id_estado, id_serv_contratado].includes("")) {
-      await changeStatus(id_estado ,id_serv_contratado);
+      await changeStatus(id_estado, id_serv_contratado);
       res.status(200).json({
         status: 200,
         estado: `Se ha cambiado de estado el servicio exitósamente`,

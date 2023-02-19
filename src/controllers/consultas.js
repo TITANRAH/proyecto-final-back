@@ -299,4 +299,22 @@ console.log('id_usuario', id_usuario)
 
   }
 
+  exports.detectarIdServEnServCont = async (id) => {
+    try {
+        let idIsPresent = false
+        const consulta = "SELECT * FROM servicios_contratados WHERE servicios_contratados.id_servicio = $1";
+        const values = [id];
+        const {rows} = await pool.query(consulta, values);
+        console.log(rows);
+        if(rows != 0){
+            return idIsPresent = true;
+        } else {
+            return idIsPresent = false;
+        }
+
+    } catch (error) {
+        console.log('no se pudo actualizar el estado del pedido',error);
+    }
+  }
+
   
