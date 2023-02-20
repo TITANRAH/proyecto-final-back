@@ -20,7 +20,7 @@ exports.createUser = async ({ rol, nombre, apellido, email, password }) => {
     } else {
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
-      rol = 2;
+      rol = 3;
       const consulta = `INSERT INTO usuarios values (DEFAULT, $1, $2, $3 ,$4, $5)`;
       const valores = [rol, nombre, apellido, email, password];
       const resultado = await pool.query(consulta, valores);
