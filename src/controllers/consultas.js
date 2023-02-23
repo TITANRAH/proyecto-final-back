@@ -245,10 +245,10 @@ exports.eliminarServicio = async (id) => {
   /* SERVICIOS CONTRATADOS */
 
  /* CREAR SERVICIO CONTRATADO */
-  exports.crearServicioContratado = async ({ id_usuario,  id_estado, id_servicio, direccion_envio, fecha_solicitud, fecha_entrega, precio_final}) => {
+  exports.crearServicioContratado = async ({ id_usuario, id_servicio, id_estado, direccion_envio, fecha_solicitud, fecha_entrega, precio_final}) => {
     try {
       const consulta = "INSERT INTO servicios_contratados values (DEFAULT, $1, $2, $3, $4, $5, $6, $7)";
-      const valores = [id_usuario,  id_estado, id_servicio, direccion_envio, fecha_solicitud, fecha_entrega, precio_final];
+      const valores = [id_usuario, id_servicio, id_estado, direccion_envio, fecha_solicitud, fecha_entrega, precio_final];
       const resultado = await pool.query(consulta, valores);
       return resultado;
     } catch (error) {

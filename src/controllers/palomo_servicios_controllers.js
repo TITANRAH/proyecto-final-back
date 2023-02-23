@@ -86,9 +86,9 @@ exports.getServices = async (req, res, next) => {
 exports.contratarServicio = async (req, res, next) => {
   try {
     const {
-      id_usuario,
-      id_estado,
+      id_usuario, 
       id_servicio,
+      id_estado,
       direccion_envio,
       fecha_solicitud,
       fecha_entrega,
@@ -97,9 +97,9 @@ exports.contratarServicio = async (req, res, next) => {
 
     if (
       ![
-        id_usuario,
-        id_estado,
+        id_usuario, 
         id_servicio,
+        id_estado,
         direccion_envio,
         fecha_solicitud,
         fecha_entrega,
@@ -107,9 +107,9 @@ exports.contratarServicio = async (req, res, next) => {
       ].includes("")
     ) {
       const servicioContratado = {
-        id_usuario,
-        id_estado,
+        id_usuario, 
         id_servicio,
+        id_estado,
         direccion_envio,
         fecha_solicitud,
         fecha_entrega,
