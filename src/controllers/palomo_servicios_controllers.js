@@ -87,8 +87,8 @@ exports.contratarServicio = async (req, res, next) => {
   try {
     const {
       id_usuario,
-      id_servicio,
       id_estado,
+      id_servicio,
       direccion_envio,
       fecha_solicitud,
       fecha_entrega,
@@ -98,8 +98,8 @@ exports.contratarServicio = async (req, res, next) => {
     if (
       ![
         id_usuario,
-        id_servicio,
         id_estado,
+        id_servicio,
         direccion_envio,
         fecha_solicitud,
         fecha_entrega,
@@ -108,8 +108,8 @@ exports.contratarServicio = async (req, res, next) => {
     ) {
       const servicioContratado = {
         id_usuario,
-        id_servicio,
         id_estado,
+        id_servicio,
         direccion_envio,
         fecha_solicitud,
         fecha_entrega,
