@@ -29,7 +29,8 @@ const {
     getServicioContratado,
     deleteServiceContratado,
     changeStatusService,
-    getCategorias
+    getCategorias,
+    getServicesContratados
 } = require("../controllers/palomo_servicios_controllers");
 
 
@@ -63,6 +64,8 @@ ruta.route("/servicio_contratado/:id")
 ruta.route("/servicio_contratado")
     .delete(securitySystem,deleteServiceContratado)
     .put(securitySystem,changeStatusService)
+ruta.route("/todos_servicios_contratados")
+    .get(securitySystem,getServicesContratados)
 
 
 module.exports = ruta;

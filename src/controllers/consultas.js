@@ -274,6 +274,24 @@ console.log('id_usuario', id_usuario)
 
   }
 
+
+  /* OBTENER SERVICIOS CONTRATADOS */
+
+  exports.getAllServiciosContratados = async() => {
+
+    
+        try {
+            const consulta = `SELECT * FROM servicios_contratados`;
+            const {rows} = await pool.query(consulta);
+            return rows
+        } catch (error) {
+            console.log("No se pueden obtener los servicios contratados", error);
+          return error;
+            
+        }
+    
+      }
+
   /* ELIMINAR LOS SERVICIOS CONTRATADOS POR ID DE SERVICIO CONTRATADO */
   exports.eliminarServicioContratado = async (id_serv_contratado) => {
     try {

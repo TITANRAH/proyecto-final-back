@@ -8,6 +8,7 @@ const {
   eliminarServicioContratado,
   changeStatus,
   detectarIdServEnServCont,
+  getAllServiciosContratados
 } = require("./consultas");
 const ErrorResponse = require("../helpers/errorResponse");
 
@@ -81,6 +82,24 @@ exports.getServices = async (req, res, next) => {
     );
   }
 };
+
+
+
+
+/* OBTENER SERVICIOS CONTRATADOS */
+exports.getServicesContratados = async (req, res, next) => {
+  try {
+    const servicios = await getAllServiciosContratados();
+    res.json(servicios);
+  } catch (err) {
+    next(
+      new ErrorResponse(
+        "Error, no ha sido posible obtener los servicios" + err + 404
+      )
+    );
+  }
+};
+
 
 /* CREAR SERVICIO CONTRATADO */
 exports.contratarServicio = async (req, res, next) => {
@@ -177,6 +196,8 @@ exports.deleteServiceContratado = async (req, res, next) => {
     );
   }
 };
+
+
 
 /* CAMBIAR ESTADO DE PEDIDO */
 
