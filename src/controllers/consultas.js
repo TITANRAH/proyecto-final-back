@@ -277,7 +277,7 @@ console.log('id_usuario', id_usuario)
   /* ELIMINAR LOS SERVICIOS CONTRATADOS POR ID DE SERVICIO CONTRATADO */
   exports.eliminarServicioContratado = async (id_serv_contratado) => {
     try {
-      const consulta = "DELETE FROM servicios_contratados WHERE id_serv_contratado = $1";
+      const consulta = "DELETE FROM servicios_contratados WHERE id_serv_contratados = $1";
       const valores = [id_serv_contratado];
       const resultado = await pool.query(consulta, valores);
       return resultado;
