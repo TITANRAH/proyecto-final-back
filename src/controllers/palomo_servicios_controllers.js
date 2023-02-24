@@ -132,11 +132,11 @@ exports.contratarServicio = async (req, res, next) => {
 /* OBTENER SERVICIO CONTRATADO POR ID DE USUARIO */
 exports.getServicioContratado = async (req, res, next) => {
   try {
-    const { id_usuario } = req.params;
+    const { id } = req.params;
 
-    console.log("id usuario", id_usuario);
+    console.log("id usuario", id);
     const servicios_contratados = await serviciosContratadosPorIdUsuario(
-      id_usuario
+      id
     );
     console.log("servicios contratados", servicios_contratados);
     res.json(servicios_contratados);
