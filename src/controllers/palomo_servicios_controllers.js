@@ -152,14 +152,14 @@ exports.getServicioContratado = async (req, res, next) => {
 /* ELIMINAR SERVICIO CONTRATADO POR ID DE SERVICIO CONTRATADO */
 exports.deleteServiceContratado = async (req, res, next) => {
   try {
-    const { id_serv_contratado } = req.body;
+    const { id_serv_contratados } = req.body;
 
-    if (id_serv_contratado != "") {
-      await eliminarServicioContratado(id_serv_contratado);
+    if (id_serv_contratados != "") {
+      await eliminarServicioContratado(id_serv_contratados);
 
       res.status(200).json({
         status: 200,
-        estado: `Servicio contratado con el id ${id_serv_contratado}, eliminado exitósamente`,
+        estado: `Servicio contratado con el id ${id_serv_contratados}, eliminado exitósamente`,
       });
     } else {
       res.status(400).json({
@@ -182,10 +182,10 @@ exports.deleteServiceContratado = async (req, res, next) => {
 
 exports.changeStatusService = async (req, res, next) => {
   try {
-    const { id_estado, id_serv_contratado } = req.body;
+    const { id_estado, id_serv_contratados } = req.body;
 
-    if (![id_estado, id_serv_contratado].includes("")) {
-      await changeStatus(id_estado, id_serv_contratado);
+    if (![id_estado, id_serv_contratados].includes("")) {
+      await changeStatus(id_estado, id_serv_contratados);
       res.status(200).json({
         status: 200,
         estado: `Se ha cambiado de estado el servicio exitósamente`,

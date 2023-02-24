@@ -305,7 +305,7 @@ console.log('id_usuario', id_usuario)
   exports.changeStatus = async (id_estado, id_serv_contratado) => {
 
     try {
-        const consulta = "UPDATE servicios_contratados SET id_estado = $1 WHERE id_serv_contratado = $2";
+        const consulta = "UPDATE servicios_contratados SET id_estado = $1 WHERE id_serv_contratados = $2";
         const values = [id_estado, id_serv_contratado];
         const result = await pool.query(consulta, values);
         return result;
