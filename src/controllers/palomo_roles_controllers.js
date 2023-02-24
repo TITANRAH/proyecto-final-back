@@ -1,8 +1,8 @@
-const { 
-    createRol, 
-    eliminarRol, 
-    modificarRol, 
-    getAllEmailRoles 
+const {
+  createRol,
+  eliminarRol,
+  modificarRol,
+  getAllEmailRoles,
 } = require("./consultas");
 const ErrorResponse = require("../helpers/errorResponse");
 
@@ -54,31 +54,23 @@ exports.deleteRol = async (req, res, next) => {
   }
 };
 
-
-
 /* MODIFICAR ROL */
 
 exports.editRol = async (req, res, next) => {
   try {
-   
     const { id_roles, id_rol, email_rol } = req.body;
     if (![id_roles, id_rol, email_rol].includes("")) {
-
-  
       await modificarRol(id_roles, id_rol, email_rol);
 
       res.status(200).json({
         status: 200,
         estado: `El rol con id ${id_roles}, ha sido modificado exitósamente `,
       });
-
     } else {
-
       res.status(400).json({
         status: 400,
         estado: "Error, id no detectado",
       });
-
     }
   } catch (err) {
     next(
@@ -89,19 +81,16 @@ exports.editRol = async (req, res, next) => {
   }
 };
 
-
 /* OBTENER ROLES */
 exports.getRoles = async (req, res, next) => {
-    try {
-      const roles = await getAllEmailRoles();   
-      res.json(roles);
-    } catch (err) {
-      next(
-        new ErrorResponse(
-          "Error, no han podido obtener los roles" + err + 404
-        )
-      );
-    }
-  };
+  try {
+    const roles = await getAllEmailRoles();
+    res.json(roles);
+  } catch (err) {
+    next(
+      new ErrorResponse("Error, no han podido obtener los roles" + err + 404)
+    );
+  }
+};
 
 /* FIN ROLES */
