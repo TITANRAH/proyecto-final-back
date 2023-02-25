@@ -33,7 +33,7 @@ exports.deleteRol = async (req, res, next) => {
     const { id } = req.params;
 
     if (id != "") {
-      await eliminarRol(id_roles);
+      await eliminarRol(id);
 
       res.status(200).json({
         status: 200,
