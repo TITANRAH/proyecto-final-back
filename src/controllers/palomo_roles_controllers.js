@@ -37,7 +37,7 @@ exports.deleteRol = async (req, res, next) => {
 
       res.status(200).json({
         status: 200,
-        estado: `Rol con el id ${id_roles}, eliminado exitósamente`,
+        estado: `Rol con el id ${id}, eliminado exitósamente`,
       });
     } else {
       res.status(400).json({
