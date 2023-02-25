@@ -363,3 +363,22 @@ exports.detectarIdServEnServCont = async (id) => {
     console.log("no se pudo actualizar el estado del pedido", error);
   }
 };
+
+
+/* CRUCE DE DATOS USUARIO Y SERVICIO CONTRATADO */
+
+exports.cruzarDatosUsuarioServCont = async () => {
+  try {
+    const consulta = `SELECT servicios_contratados.id_serv_contratados, servicios_contratados.id_estado ,nombre,apellido,titulo,direccion_envio, estado FROM servicios_contratados
+    INNER JOIN estados ON servicios_contratados.id_estado = estados.id_estado
+    INNER JOIN usuarios ON servicios_contratados.id_usuario = usuarios.id_usuario
+    INNER JOIN servicios ON servicios_contratados.id_servicio = servicios.id_servicio ORDER BY servicios_contratados.id_serv_contratados`
+
+    const { rows } = await pool.query(consulta, values);
+    console.log(rows)
+  }catch (error){
+
+    console.log("no se pudieron obtener los datos requeridos", error);
+  }
+
+}

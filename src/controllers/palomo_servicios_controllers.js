@@ -8,7 +8,8 @@ const {
   eliminarServicioContratado,
   changeStatus,
   detectarIdServEnServCont,
-  getAllServiciosContratados
+  getAllServiciosContratados,
+  cruzarDatosUsuarioServCont
 } = require("./consultas");
 const ErrorResponse = require("../helpers/errorResponse");
 
@@ -83,6 +84,20 @@ exports.getServices = async (req, res, next) => {
   }
 };
 
+/* OBTENER SERVICIOS CONTRATADOS CRUZANDO LOS USUARIOS */
+
+exports.getServicesWithDataUser = async (req, res, next) => {
+  try {
+    const servicios = await cruzarDatosUsuarioServCont();
+    res.json(servicios);
+  } catch (err) {
+    next(
+      new ErrorResponse(
+        "Error, no ha sido posible obtener los servicios y datos de usuario" + err + 404
+      )
+    );
+  }
+};
 
 
 
