@@ -375,7 +375,8 @@ exports.cruzarDatosUsuarioServCont = async () => {
     INNER JOIN servicios ON servicios_contratados.id_servicio = servicios.id_servicio ORDER BY servicios_contratados.id_serv_contratados`
 
     const { rows } = await pool.query(consulta);
-    console.log(rows)
+    return rows
+    
   }catch (error){
 
     console.log("no se pudieron obtener los datos requeridos", error);
