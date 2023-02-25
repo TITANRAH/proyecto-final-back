@@ -31,6 +31,7 @@ exports.createRoles = async (req, res, next) => {
 exports.deleteRol = async (req, res, next) => {
   try {
     const { id } = req.params;
+    console.log("id", id);
 
     if (id != "") {
       await eliminarRol(id);
