@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --detectOpenHandles",
     "start": "nodemon src/server.js"
   },
   "author": "",
@@ -20,5 +20,9 @@
     "pg": "^8.9.0",
     "pg-format": "^1.0.4",
     "postgres": "^3.3.3"
+  },
+  "devDependencies": {
+    "jest": "^29.4.3",
+    "supertest": "^6.3.3"
   }
 }
