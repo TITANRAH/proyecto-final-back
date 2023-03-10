@@ -156,6 +156,13 @@ exports.modificarRol = async (id_roles, id_rol, email_rol) => {
     console.log("consulta update", consulta);
     const valores = [id_roles, id_rol, email_rol];
     const resultados = await pool.query(consulta, valores);
+
+    const isBool = usuarioExiste(email_rol)
+
+    if(isBool) {
+      updateRoluser(id_rol, email_rol)
+    }
+   
     return resultados;
   } catch (error) {
     console.log("no se pudo actualizar el rol", error);
@@ -175,6 +182,41 @@ exports.getAllEmailRoles = async () => {
     return error;
   }
 };
+
+updateRoluser = async (id_rol, email) => {
+
+  try {
+    const consulta = `UPDATE usuarios SET id_rol = $1, WHERE email = $2`;
+    const valores = [ id_rol, email];
+    const { rows } = await pool.query(consulta, valores);
+
+    console.log("rows: ", rows);
+    return rows;
+  } catch (error) {
+    console.log("No se puede actualizar rol en usuario", error);
+    return error;
+  }
+
+}
+
+usuarioExiste = async (email) => {  
+
+  
+  try {
+    const consulta = `SELECT * FROM usuarios WHERE email = $1`;
+    const valores = [email];
+    const { rows } = await pool.query(consulta, valores);
+
+    console.log("rows: ", rows);
+    return true;
+  } catch (error) {
+    console.log("Usuario no existe", error);
+    return error;
+  }
+
+
+}
+
 
 /* FIN ROLES */
 
