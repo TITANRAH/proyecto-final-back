@@ -8,6 +8,8 @@ const {
   eliminarServicioContratado,
   changeStatus,
   detectarIdServEnServCont,
+  getAllServiciosContratados,
+  cruzarDatosUsuarioServCont
 } = require("./consultas");
 const ErrorResponse = require("../helpers/errorResponse");
 
@@ -82,11 +84,43 @@ exports.getServices = async (req, res, next) => {
   }
 };
 
+/* OBTENER SERVICIOS CONTRATADOS CRUZANDO LOS USUARIOS */
+
+exports.getServicesWithDataUser = async (req, res, next) => {
+  try {
+    const servicios = await cruzarDatosUsuarioServCont();
+    res.json(servicios);
+  } catch (err) {
+    next(
+      new ErrorResponse(
+        "Error, no ha sido posible obtener los servicios y datos de usuario" + err + 404
+      )
+    );
+  }
+};
+
+
+
+/* OBTENER SERVICIOS CONTRATADOS */
+exports.getServicesContratados = async (req, res, next) => {
+  try {
+    const servicios = await getAllServiciosContratados();
+    res.json(servicios);
+  } catch (err) {
+    next(
+      new ErrorResponse(
+        "Error, no ha sido posible obtener los servicios" + err + 404
+      )
+    );
+  }
+};
+
+
 /* CREAR SERVICIO CONTRATADO */
 exports.contratarServicio = async (req, res, next) => {
   try {
     const {
-      id_usuario,
+      id_usuario, 
       id_servicio,
       id_estado,
       direccion_envio,
@@ -97,7 +131,7 @@ exports.contratarServicio = async (req, res, next) => {
 
     if (
       ![
-        id_usuario,
+        id_usuario, 
         id_servicio,
         id_estado,
         direccion_envio,
@@ -107,7 +141,7 @@ exports.contratarServicio = async (req, res, next) => {
       ].includes("")
     ) {
       const servicioContratado = {
-        id_usuario,
+        id_usuario, 
         id_servicio,
         id_estado,
         direccion_envio,
@@ -132,11 +166,11 @@ exports.contratarServicio = async (req, res, next) => {
 /* OBTENER SERVICIO CONTRATADO POR ID DE USUARIO */
 exports.getServicioContratado = async (req, res, next) => {
   try {
-    const { id_usuario } = req.body;
+    const { id } = req.params;
 
-    console.log("id usuario", id_usuario);
+    console.log("id usuario", id);
     const servicios_contratados = await serviciosContratadosPorIdUsuario(
-      id_usuario
+      id
     );
     console.log("servicios contratados", servicios_contratados);
     res.json(servicios_contratados);
@@ -152,14 +186,14 @@ exports.getServicioContratado = async (req, res, next) => {
 /* ELIMINAR SERVICIO CONTRATADO POR ID DE SERVICIO CONTRATADO */
 exports.deleteServiceContratado = async (req, res, next) => {
   try {
-    const { id_serv_contratado } = req.body;
+    const { id_serv_contratados } = req.body;
 
-    if (id_serv_contratado != "") {
-      await eliminarServicioContratado(id_serv_contratado);
+    if (id_serv_contratados != "") {
+      await eliminarServicioContratado(id_serv_contratados);
 
       res.status(200).json({
         status: 200,
-        estado: `Servicio contratado con el id ${id_serv_contratado}, eliminado exitósamente`,
+        estado: `Servicio contratado con el id ${id_serv_contratados}, eliminado exitósamente`,
       });
     } else {
       res.status(400).json({
@@ -178,14 +212,16 @@ exports.deleteServiceContratado = async (req, res, next) => {
   }
 };
 
+
+
 /* CAMBIAR ESTADO DE PEDIDO */
 
 exports.changeStatusService = async (req, res, next) => {
   try {
-    const { id_estado, id_serv_contratado } = req.body;
+    const { id_estado, id_serv_contratados } = req.body;
 
-    if (![id_estado, id_serv_contratado].includes("")) {
-      await changeStatus(id_estado, id_serv_contratado);
+    if (![id_estado, id_serv_contratados].includes("")) {
+      await changeStatus(id_estado, id_serv_contratados);
       res.status(200).json({
         status: 200,
         estado: `Se ha cambiado de estado el servicio exitósamente`,

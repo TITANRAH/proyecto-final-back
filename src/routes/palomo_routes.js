@@ -29,7 +29,9 @@ const {
     getServicioContratado,
     deleteServiceContratado,
     changeStatusService,
-    getCategorias
+    getCategorias,
+    getServicesContratados,
+    getServicesWithDataUser
 } = require("../controllers/palomo_servicios_controllers");
 
 
@@ -46,9 +48,9 @@ ruta.route("/login")
     .post(login);
 ruta.route("/roles")
     .post(securitySystem,createRoles)
-    .delete(securitySystem,deleteRol)
     .put(securitySystem,editRol) 
-    .get(securitySystem,getRoles)    
+    .get(securitySystem,getRoles)   
+    .delete(deleteRol) 
 ruta.route("/crear-servicio")
     .post(securitySystem,createService)
 ruta.route("/servicio/:id")
@@ -58,10 +60,15 @@ ruta.route("/servicios")
     .get(getServices)
 ruta.route("/categorias")
     .get(getCategorias)
-ruta.route("/servicio_contratado")
+ruta.route("/servicio_contratado/:id")
     .get(securitySystem,getServicioContratado)
+ruta.route("/servicio_contratado")
     .delete(securitySystem,deleteServiceContratado)
     .put(securitySystem,changeStatusService)
+ruta.route("/todos_servicios_contratados")
+    .get(securitySystem,getServicesContratados)
+ruta.route("/servicios_contratados_usuarios")
+    .get(getServicesWithDataUser)
 
 
 module.exports = ruta;

@@ -20,7 +20,7 @@ exports.createUser = async ({ rol, nombre, apellido, email, password }) => {
     } else {
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
-      rol = 2;
+      rol = 1;
       const consulta = `INSERT INTO usuarios values (DEFAULT, $1, $2, $3 ,$4, $5)`;
       const valores = [rol, nombre, apellido, email, password];
       const resultado = await pool.query(consulta, valores);
@@ -115,8 +115,6 @@ exports.modificarUsuario = async (
 
 /* FIN USUARIOS */
 
-
-
 /* ROLES */
 
 /* CREAR ROL CONSULTA */
@@ -144,8 +142,6 @@ exports.eliminarRol = async (id) => {
     return error;
   }
 };
-
-
 
 /* MODIFICAR ROL */
 
@@ -220,159 +216,212 @@ usuarioExiste = async (email) => {
 
 /* FIN ROLES */
 
-
 /* SERVICIOS */
 
 /* CREAR SERVICIO CONSULTA */
-exports.crearServicio = async ({ id_categoria, titulo, descripcion, img_src, precio, categoria }) => {
-    try {
-      const consultaCat = await pool.query(`SELECT id_categoria FROM categorias WHERE categoria = '${categoria}'`)
-      id_categoria = consultaCat.rows[0].id_categoria
-      const consulta = "INSERT INTO servicios values (DEFAULT, $1, $2, $3, $4, $5)";
-      const valores = [id_categoria, titulo,descripcion, img_src, precio];
-      const resultado = await pool.query(consulta, valores);
-      return resultado;
-    } catch (error) {
-      console.log("No se pudo crear servicio", error);
-      return error;
-    }
-  };
+exports.crearServicio = async ({
+  id_categoria,
+  titulo,
+  descripcion,
+  img_src,
+  precio,
+  categoria,
+}) => {
+  try {
+    const consultaCat = await pool.query(
+      `SELECT id_categoria FROM categorias WHERE categoria = '${categoria}'`
+    );
+    id_categoria = consultaCat.rows[0].id_categoria;
+    const consulta =
+      "INSERT INTO servicios values (DEFAULT, $1, $2, $3, $4, $5)";
+    const valores = [id_categoria, titulo, descripcion, img_src, precio];
+    const resultado = await pool.query(consulta, valores);
+    return resultado;
+  } catch (error) {
+    console.log("No se pudo crear servicio", error);
+    return error;
+  }
+};
 
-  /* ELIMINAR SERVICIO CONSULTA */
+/* ELIMINAR SERVICIO CONSULTA */
 exports.eliminarServicio = async (id) => {
-    try {
-      const consulta = "DELETE FROM servicios WHERE id_servicio = $1";
-      const valores = [id];
-      const resultado = await pool.query(consulta, valores);
-      return resultado;
-    } catch (error) {
-      console.log("No se pudo llevar a cabo la eliminación", error);
-      return error;
-    }
-  };
+  try {
+    const consulta = "DELETE FROM servicios WHERE id_servicio = $1";
+    const valores = [id];
+    const resultado = await pool.query(consulta, valores);
+    return resultado;
+  } catch (error) {
+    console.log("No se pudo llevar a cabo la eliminación", error);
+    return error;
+  }
+};
 
-  /* OBTENER SERVICIOS CONSULTA */
-  exports.getAllServices = async () => {
-    try {
-      const consulta = "SELECT * FROM servicios";
-      const { rows } = await pool.query(consulta);
-  
-      console.log("rows: ", rows);
-      return rows;
-    } catch (error) {
-      console.log("No se pueden obtener los servicios", error);
-      return error;
-    }
-  };
+/* OBTENER SERVICIOS CONSULTA */
+exports.getAllServices = async () => {
+  try {
+    const consulta = "SELECT * FROM servicios";
+    const { rows } = await pool.query(consulta);
 
-  /* OBTENER CATEGORIAS */
+    console.log("rows: ", rows);
+    return rows;
+  } catch (error) {
+    console.log("No se pueden obtener los servicios", error);
+    return error;
+  }
+};
 
-  exports.getAllCategorias = async () => {
-    try {
-      const consulta = "SELECT * FROM categorias";
-      const { rows } = await pool.query(consulta);
-  
-      console.log("rows: ", rows);
-      return rows;
-    } catch (error) {
-      console.log("No se pueden obtener las categorias", error);
-      return error;
-    }
-  };
+/* OBTENER CATEGORIAS */
 
+exports.getAllCategorias = async () => {
+  try {
+    const consulta = "SELECT * FROM categorias";
+    const { rows } = await pool.query(consulta);
 
-  /* FIN SERVICIOS */
+    console.log("rows: ", rows);
+    return rows;
+  } catch (error) {
+    console.log("No se pueden obtener las categorias", error);
+    return error;
+  }
+};
 
+/* FIN SERVICIOS */
 
-  /* SERVICIOS CONTRATADOS */
+/* SERVICIOS CONTRATADOS */
 
- /* CREAR SERVICIO CONTRATADO */
-  exports.crearServicioContratado = async ({ id_usuario,  id_estado, direccion_envio, fecha_solicitud, fecha_entrega, precio_final, id_servicio }) => {
-    try {
-      const consulta = "INSERT INTO servicios_contratados values (DEFAULT, $1, $2, $3, $4, $5, $6, $7)";
-      const valores = [id_usuario,  id_estado, direccion_envio, fecha_solicitud, fecha_entrega, precio_final, id_servicio,];
-      const resultado = await pool.query(consulta, valores);
-      return resultado;
-    } catch (error) {
-      console.log("No se pudo crear servicio contratado", error);
-      return error;
-    }
-  };
+/* CREAR SERVICIO CONTRATADO */
+exports.crearServicioContratado = async ({
+  id_usuario,
+  id_servicio,
+  id_estado,
+  direccion_envio,
+  fecha_solicitud,
+  fecha_entrega,
+  precio_final,
+}) => {
+  try {
+    const consulta =
+      "INSERT INTO servicios_contratados values (DEFAULT, $1, $2, $3, $4, $5, $6, $7)";
+    const valores = [
+      id_usuario,
+      id_servicio,
+      id_estado,
+      direccion_envio,
+      fecha_solicitud,
+      fecha_entrega,
+      precio_final,
+    ];
+    const resultado = await pool.query(consulta, valores);
+    return resultado;
+  } catch (error) {
+    console.log("No se pudo crear servicio contratado", error);
+    return error;
+  }
+};
 
 /* OBTENER LOS SERVICIOS CONTRATADOS POR USUARIO */
-  exports.serviciosContratadosPorIdUsuario = async(id_usuario) => {
-
-console.log('id_usuario', id_usuario)
-    try {
-        const consulta = `SELECT * FROM servicios_contratados WHERE servicios_contratados.id_usuario = $1`;
-        const valores = [id_usuario];
-        const {rows} = await pool.query(consulta, valores);
-        return rows
-    } catch (error) {
-        console.log("No se pudo obtener servicio contratado", error);
-      return error;
-        
-    }
-
+exports.serviciosContratadosPorIdUsuario = async (id_usuario) => {
+  console.log("id_usuario", id_usuario);
+  try {
+    const consulta = `SELECT * FROM servicios_contratados WHERE servicios_contratados.id_usuario = $1`;
+    const valores = [id_usuario];
+    const { rows } = await pool.query(consulta, valores);
+    return rows;
+  } catch (error) {
+    console.log("No se pudo obtener servicio contratado", error);
+    return error;
   }
+};
 
-  /* ELIMINAR LOS SERVICIOS CONTRATADOS POR ID DE SERVICIO CONTRATADO */
-  exports.eliminarServicioContratado = async (id_serv_contratado) => {
-    try {
-      const consulta = "DELETE FROM servicios_contratados WHERE id_serv_contratado = $1";
-      const valores = [id_serv_contratado];
-      const resultado = await pool.query(consulta, valores);
-      return resultado;
-    } catch (error) {
-      console.log("No se pudo llevar a cabo la eliminación", error);
-      return error;
-    }
-  };
+/* OBTENER SERVICIOS CONTRATADOS */
+
+exports.getAllServiciosContratados = async () => {
+  try {
+    const consulta = `SELECT * FROM servicios_contratados`;
+    const { rows } = await pool.query(consulta);
+    return rows;
+  } catch (error) {
+    console.log("No se pueden obtener los servicios contratados", error);
+    return error;
+  }
+};
+
+/* ELIMINAR LOS SERVICIOS CONTRATADOS POR ID DE SERVICIO CONTRATADO */
+exports.eliminarServicioContratado = async (id_serv_contratado) => {
+  try {
+    const consulta =
+      "DELETE FROM servicios_contratados WHERE id_serv_contratados = $1";
+    const valores = [id_serv_contratado];
+    const resultado = await pool.query(consulta, valores);
+    return resultado;
+  } catch (error) {
+    console.log("No se pudo llevar a cabo la eliminación", error);
+    return error;
+  }
+};
 
 /* ELIMINAR LOS SERVICIOS CONTRATADOS DE UN USUARIO ELIMINADO */
-  exports.eliminarServContrataAlEliminarUsuario = async (id_usuario) => {
-    try {
-      const consulta = "DELETE FROM servicios_contratados WHERE servicios_contratados.id_usuario = $1";
-      const valores = [id_usuario];
-      const resultado = await pool.query(consulta, valores);
-      return resultado;
-    } catch (error) {
-      console.log("No se pudo llevar a cabo la eliminación", error);
-      return error;
+exports.eliminarServContrataAlEliminarUsuario = async (id_usuario) => {
+  try {
+    const consulta =
+      "DELETE FROM servicios_contratados WHERE servicios_contratados.id_usuario = $1";
+    const valores = [id_usuario];
+    const resultado = await pool.query(consulta, valores);
+    return resultado;
+  } catch (error) {
+    console.log("No se pudo llevar a cabo la eliminación", error);
+    return error;
+  }
+};
+
+/* CAMBIAR DE ESTADO UN SERVICIO CONTRATADO */
+
+exports.changeStatus = async (id_estado, id_serv_contratado) => {
+  try {
+    const consulta =
+      "UPDATE servicios_contratados SET id_estado = $1 WHERE id_serv_contratados = $2";
+    const values = [id_estado, id_serv_contratado];
+    const result = await pool.query(consulta, values);
+    return result;
+  } catch (error) {
+    console.log("no se pudo actualizar el estado del pedido", error);
+  }
+};
+
+exports.detectarIdServEnServCont = async (id) => {
+  try {
+    let idIsPresent = false;
+    const consulta =
+      "SELECT * FROM servicios_contratados WHERE servicios_contratados.id_servicio = $1";
+    const values = [id];
+    const { rows } = await pool.query(consulta, values);
+    console.log(rows);
+    if (rows != 0) {
+      return (idIsPresent = true);
+    } else {
+      return (idIsPresent = false);
     }
-  };
+  } catch (error) {
+    console.log("no se pudo actualizar el estado del pedido", error);
+  }
+};
 
-  /* CAMBIAR DE ESTADO UN SERVICIO CONTRATADO */
 
-  exports.changeStatus = async (id_estado, id_serv_contratado) => {
+/* CRUCE DE DATOS USUARIO Y SERVICIO CONTRATADO */
 
-    try {
-        const consulta = "UPDATE servicios_contratados SET id_estado = $1 WHERE id_serv_contratado = $2";
-        const values = [id_estado, id_serv_contratado];
-        const result = await pool.query(consulta, values);
-        return result;
-      } catch (error) {
-        console.log('no se pudo actualizar el estado del pedido',error);
-      }
+exports.cruzarDatosUsuarioServCont = async () => {
+  try {
+    const consulta = `SELECT servicios_contratados.id_serv_contratados, servicios_contratados.id_estado ,nombre,apellido,titulo,direccion_envio, estado FROM servicios_contratados
+    INNER JOIN estados ON servicios_contratados.id_estado = estados.id_estado
+    INNER JOIN usuarios ON servicios_contratados.id_usuario = usuarios.id_usuario
+    INNER JOIN servicios ON servicios_contratados.id_servicio = servicios.id_servicio ORDER BY servicios_contratados.id_serv_contratados`
 
+    const { rows } = await pool.query(consulta);
+    return rows
+    
+  }catch (error){
+
+    console.log("no se pudieron obtener los datos requeridos", error);
   }
 
-  exports.detectarIdServEnServCont = async (id) => {
-    try {
-        let idIsPresent = false
-        const consulta = "SELECT * FROM servicios_contratados WHERE servicios_contratados.id_servicio = $1";
-        const values = [id];
-        const {rows} = await pool.query(consulta, values);
-        console.log(rows);
-        if(rows != 0){
-            return idIsPresent = true;
-        } else {
-            return idIsPresent = false;
-        }
-
-    } catch (error) {
-        console.log('no se pudo actualizar el estado del pedido',error);
-    }
-  }
-
-  
+}
