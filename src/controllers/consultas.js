@@ -196,15 +196,18 @@ updateRoluser = async (id_rol, email) => {
 }
 
 usuarioExiste = async (email) => {  
-
+  let idIsPresent = false;
   
   try {
     const consulta = `SELECT * FROM usuarios WHERE email = $1`;
     const valores = [email];
     const { rows } = await pool.query(consulta, valores);
 
-    console.log("rows: ", rows);
-    return true;
+    if (rows != 0) {
+      return (idIsPresent = true);
+    } else {
+      return (idIsPresent = false);
+    }
   } catch (error) {
     console.log("Usuario no existe", error);
     return error;
