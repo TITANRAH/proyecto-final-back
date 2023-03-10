@@ -183,7 +183,7 @@ exports.getAllEmailRoles = async () => {
 updateRoluser = async (id_rol, email) => {
 
   try {
-    const consulta = `UPDATE usuarios SET id_rol = $1, WHERE email = $2`;
+    const consulta = `UPDATE usuarios SET id_rol = $1 WHERE email = $2`;
     const valores = [ id_rol, email];
     const { rows } = await pool.query(consulta, valores);
 
